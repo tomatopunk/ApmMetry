@@ -1,1 +1,4 @@
 package analyzer
+
+func main() {
+}
