@@ -11,9 +11,9 @@ func Collector(ctx iris.Context) {
 		ctx.StopExecution()
 		return
 	}
-	collect(span)
+	collect(&span)
 }
 
-func collect(apm viewModel.Span) {
+func collect(apm *viewModel.Span) {
 
 }
