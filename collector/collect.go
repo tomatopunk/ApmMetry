@@ -2,6 +2,7 @@ package main
 
 import (
 	"collector/handle"
+	"collector/processor"
 	"collector/server"
 	"fmt"
 	"google.golang.org/grpc"
@@ -12,15 +13,15 @@ type Collector struct {
 }
 
 func New() *Collector {
-	return &Collector{
-
-	}
+	return &Collector{}
 }
 
 func (c *Collector) StartServer(options *CollectOptions) error {
+	process := processor.NewSpanProcessor()
+
 	gRPCServer, err := server.StartGRPCServer(&server.GRPCServerParams{
 		HostPort: options.CollectorGRPCHostPort,
-		Handler:  handle.NewGRPCHandler(nil),
+		Handler:  handle.NewGRPCHandler(process),
 	})
 	c.gRPCServer = gRPCServer
 	if err != nil {
