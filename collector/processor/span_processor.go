@@ -1,7 +1,7 @@
 package processor
 
 func NewSpanProcessor() SpanProcess {
-	sp := newMongoSpanProcessor()
+	sp := newEsSpanProcessor()
 	return sp
 }
 
@@ -17,5 +17,10 @@ func newRedisSpanProcessor() *redisProcessor {
 
 func newMongoSpanProcessor() *MongoProcessor {
 	sp := MongoProcessor{}
+	return &sp
+}
+
+func newEsSpanProcessor() *esProcessor {
+	sp := esProcessor{}
 	return &sp
 }
