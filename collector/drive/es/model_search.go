@@ -1,6 +1,8 @@
 package es
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 type SearchBody struct {
 	Indices        []string           `json:"-"`

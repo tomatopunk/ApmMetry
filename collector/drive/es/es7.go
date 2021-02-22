@@ -7,6 +7,7 @@ import (
 	"fmt"
 	es7 "github.com/elastic/go-elasticsearch/v7"
 	"io"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -67,6 +68,40 @@ func (e es7client) Bulk(ctx context.Context, bulkBody io.Reader) (*BulkResponse,
 	return &blk, nil
 }
 
-func (e es7client) Search(ctx context.Context, queries []SearchBody, size int, indices ...string) (*SearchResponse, error) {
-	panic("implement me")
+func (e es7client) Search(ctx context.Context, queries SearchBody, size int, indices ...string) (*SearchResponse, error) {
+	body, err := queries.encodeSearchBody()
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := e.client.Search(
+		e.client.Search.WithContext(ctx),
+		e.client.Search.WithIndex(indices...),
+		e.client.Search.WithBody(body),
+		e.client.Search.WithIgnoreUnavailable(true),
+		e.client.Search.WithSize(size))
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer res.Body.Close()
+
+	data, err := ioutil.ReadAll(res.Body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	r := &es7searchResponse{}
+	if err = json.Unmarshal(data, r); err != nil {
+		return nil, err
+	}
+	return &SearchResponse{
+		Aggs: r.Aggs,
+		Hits: Hits{
+			Total: r.Hits.Total.Value,
+			Hits:  r.Hits.Hits,
+		},
+	}, nil
 }

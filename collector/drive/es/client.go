@@ -19,7 +19,7 @@ type ElasticsearchClient interface {
 
 	Bulk(ctx context.Context, bulkBody io.Reader) (*BulkResponse, error)
 
-	Search(ctx context.Context, queries []SearchBody, size int, indices ...string) (*SearchResponse, error)
+	Search(ctx context.Context, query SearchBody, size int, indices ...string) (*SearchResponse, error)
 
 	AddDataToBulkBuffer(bulkBody *bytes.Buffer, data []byte, index, typ string)
 }
@@ -45,6 +45,18 @@ type BulkIndexResponse struct {
 			Reason string `json:"reason"`
 		} `json:"caused_by"`
 	} `json:"error"`
+}
+
+type es7searchResponse struct {
+	Hits es7its                         `json:"hits"`
+	Aggs map[string]AggregationResponse `json:"aggregations,omitempty"`
+}
+
+type es7its struct {
+	Total struct {
+		Value int `json:"value"`
+	} `json:"total"`
+	Hits []Hit `json:"hits"`
 }
 
 func NewClient(config clientConfig, roundTripper http.RoundTripper) (ElasticsearchClient, error) {
