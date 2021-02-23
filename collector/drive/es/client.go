@@ -7,11 +7,10 @@ import (
 	"net/http"
 )
 
-type clientConfig struct {
-	DiscoverNotesOnStartup bool
-	Addresses              []string
-	Username               string
-	Password               string
+type ClientConfig struct {
+	Addresses []string
+	Username  string
+	Password  string
 }
 
 type ElasticsearchClient interface {
@@ -59,7 +58,7 @@ type es7its struct {
 	Hits []Hit `json:"hits"`
 }
 
-func NewClient(config clientConfig, roundTripper http.RoundTripper) (ElasticsearchClient, error) {
+func NewClient(config ClientConfig, roundTripper http.RoundTripper) (ElasticsearchClient, error) {
 	client, err := NewElasticsearch7Client(config, roundTripper)
 	if err != nil {
 		return nil, err

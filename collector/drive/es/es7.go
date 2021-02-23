@@ -19,7 +19,7 @@ const (
 	bulkES7MetaFormat = `{"index":{"_index":"%s"}}` + "\n"
 )
 
-func NewElasticsearch7Client(config clientConfig, roundTripper http.RoundTripper) (*es7client, error) {
+func NewElasticsearch7Client(config ClientConfig, roundTripper http.RoundTripper) (*es7client, error) {
 	client, err := es7.NewClient(es7.Config{
 		Addresses: config.Addresses,
 		Username:  config.Username,

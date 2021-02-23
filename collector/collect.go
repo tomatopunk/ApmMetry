@@ -1,6 +1,7 @@
 package main
 
 import (
+	"collector/drive/es"
 	"collector/handle"
 	"collector/processor"
 	"collector/server"
@@ -17,8 +18,15 @@ func New() *Collector {
 }
 
 func (c *Collector) StartServer(options *CollectOptions) error {
-	process := processor.NewSpanProcessor()
+	process, err := processor.NewSpanProcessor(es.ClientConfig{
+		Addresses: []string{"hahha"},
+		Username:  "",
+		Password:  "",
+	})
 
+	if err != nil {
+		return err
+	}
 	gRPCServer, err := server.StartGRPCServer(&server.GRPCServerParams{
 		HostPort: options.CollectorGRPCHostPort,
 		Handler:  handle.NewGRPCHandler(process),
