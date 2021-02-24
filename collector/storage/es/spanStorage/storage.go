@@ -6,6 +6,11 @@ import (
 	"context"
 	jModel "github.com/jaegertracing/jaeger/model"
 	"net/http"
+	"time"
+)
+
+const (
+	SpanIndexName = "span"
 )
 
 type EsStorage struct {
@@ -22,12 +27,17 @@ func NewEsStorage(esConfig es.ClientConfig) (EsStorage, error) {
 	if err != nil {
 		return storage, err
 	}
+
 	storage.client = client
 	storage.config = esConfig
 	storage.w = esSpanWriter{
 		client:    client,
 		indexName: "span",
 	}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*60)
+	defer cancel()
+
+	storage.w.CreateTemplate(ctx, SpanIndexName, "")
 	return storage, nil
 }
 

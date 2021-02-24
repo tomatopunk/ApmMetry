@@ -43,7 +43,7 @@ func (e es7client) PutTemplate(ctx context.Context, name string, template io.Rea
 	return nil
 }
 
-func (e es7client) AddDataToBulkBuffer(bulkBody *bytes.Buffer, data []byte, index, typ string) {
+func (e es7client) AddDataToBulkBuffer(bulkBody *bytes.Buffer, data []byte, index, _ string) {
 	meta := []byte(fmt.Sprintf(bulkES7MetaFormat, index))
 	bulkBody.Grow(len(meta) + len(data) + len("\n"))
 	bulkBody.Write(meta)

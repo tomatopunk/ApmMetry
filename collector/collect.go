@@ -19,9 +19,7 @@ func New() *Collector {
 
 func (c *Collector) StartServer(options *CollectOptions) error {
 	process, err := processor.NewSpanProcessor(es.ClientConfig{
-		Addresses: []string{"hahha"},
-		Username:  "",
-		Password:  "",
+		Addresses: []string{"http://127.0.0.1:9200/"},
 	})
 
 	if err != nil {

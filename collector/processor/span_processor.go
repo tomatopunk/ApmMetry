@@ -31,7 +31,6 @@ func newMongoSpanProcessor() *MongoProcessor {
 }
 
 func newEsSpanProcessor(esConfig es.ClientConfig) (*esProcessor, error) {
-	//esConfig := es.ClientConfig{}
 	storage, err := spanStorage.NewEsStorage(esConfig)
 	if err != nil {
 		return nil, err
