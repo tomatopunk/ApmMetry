@@ -13,7 +13,7 @@ type Collector struct {
 	gRPCServer *grpc.Server
 }
 
-func New() *Collector {
+func CreateCollector() *Collector {
 	return &Collector{}
 }
 
