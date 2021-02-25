@@ -2,8 +2,12 @@ package main
 
 func main() {
 	collect := CreateCollector()
-	collect.StartServer(&CollectOptions{
-		CollectorGRPCHostPort: "127.0.0.1:33666",
+	err := collect.StartServer(&CollectOptions{
+		CollectorGRPCHostPort: ":5000",
 	})
+	if err != nil {
+		println(err.Error())
+	}
 	defer collect.Close()
+
 }

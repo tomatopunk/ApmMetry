@@ -16,13 +16,13 @@ type GRPCServerParams struct {
 func StartGRPCServer(params *GRPCServerParams) (*grpc.Server, error) {
 	server := grpc.NewServer()
 
-	listener, err := net.Listen("TCP", params.HostPort)
+	listener, err := net.Listen("tcp", params.HostPort)
 	if err != nil {
 		return nil, fmt.Errorf("%w", err)
 	}
 
 	if err := rpcServer(listener, server, params); err != nil {
-
+		return nil, err
 	}
 	return server, nil
 }
@@ -31,10 +31,14 @@ func rpcServer(listener net.Listener, server *grpc.Server, params *GRPCServerPar
 	api_v2.RegisterCollectorServiceServer(server, params.Handler)
 	fmt.Println("Start gRPC server")
 
-	go func() {
-		if err := server.Serve(listener); err != nil {
-			fmt.Errorf("%w", err)
-		}
-	}()
+	if err := server.Serve(listener); err != nil {
+		fmt.Errorf("Could not launch gRPC service {%w}", err)
+	}
+
+	//go func() {
+	//	if err := server.Serve(listener); err != nil {
+	//		fmt.Errorf("Could not launch gRPC service {%w}", err)
+	//	}
+	//}()
 	return nil
 }

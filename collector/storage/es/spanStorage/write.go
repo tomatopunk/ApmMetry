@@ -32,6 +32,7 @@ func (w esSpanWriter) writeSpans(ctx context.Context, span []model.Span) (int, e
 	res, err := w.client.Bulk(ctx, buf)
 	if err != nil {
 		errs = append(errs, err)
+		return 0, CombineErrors(errs)
 	}
 	errLen, err := handleBulkResponse(res)
 	if err != nil {
