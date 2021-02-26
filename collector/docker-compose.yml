@@ -1,6 +1,6 @@
 version: "3.9"
 services:
-  redis_single:
+  es_single:
     image: elasticsearch:7.10.1
     container_name: "es1"
     environment:
