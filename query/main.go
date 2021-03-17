@@ -1,1 +1,4 @@
-package query
+package main
+
+func main() {
+}
