@@ -63,6 +63,10 @@ type RangeQuery struct {
 	LTE interface{} `json:lte`
 }
 
+type MultiSearchResponse struct {
+	Responses []SearchResponse `json:"responses"`
+}
+
 type SearchResponse struct {
 	Hits  Hits                           `json:"hits"`
 	Aggs  map[string]AggregationResponse `json:"aggregations,omitempty"`

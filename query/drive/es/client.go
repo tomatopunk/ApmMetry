@@ -13,6 +13,7 @@ type ClientConfig struct {
 
 type ElasticsearchClient interface {
 	Search(ctx context.Context, query SearchBody, size int, indices ...string) (*SearchResponse, error)
+	MultiSearch(ctx context.Context, queries []SearchBody) (*MultiSearchResponse, error)
 }
 
 type BulkResponse struct {
