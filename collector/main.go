@@ -1,12 +1,13 @@
 package main
 
-import (
-	"collector/handle"
-	"github.com/kataras/iris/v12"
-)
-
 func main() {
-	app := iris.Default()
-	app.Handle("POST", "/collect", handle.Collector)
-	app.Listen(":8081")
+	collect := CreateCollector()
+	err := collect.StartServer(&CollectOptions{
+		CollectorGRPCHostPort: ":5000",
+	})
+	if err != nil {
+		println(err.Error())
+	}
+	defer collect.Close()
+
 }
